@@ -1,0 +1,23 @@
+<flex-config>
+	<output>../../../target/FQLEditor.swf</output>
+	<target-player>10.0.0</target-player>
+	<benchmark>false</benchmark>
+	<warnings>true</warnings>
+
+	<compiler>
+		<debug>true</debug>
+
+		<keep-generated-actionscript>false</keep-generated-actionscript>
+
+		<source-path>
+			<path-element>../flex</path-element>
+		</source-path>
+	</compiler>
+
+	<metadata>
+		<creator>Ben Johnson</creator>
+		<description>An Editor for the Facebook Query Language.</description>
+		<language>EN</language>
+		<title>fql-editor</title>
+	</metadata>
+</flex-config>

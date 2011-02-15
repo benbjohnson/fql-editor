@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/2.0">
+    <id>FQLEditor</id>
+    <version>1.0</version>
+    <filename>FQLEditor</filename>
+    <name>FQLEditor</name>
+    <initialWindow>
+        <title>FQLEditor</title>
+        <content>FQLEditor.swf</content>
+        <systemChrome>standard</systemChrome>
+        <visible>true</visible>
+        <minimizable>true</minimizable>
+        <maximizable>true</maximizable>
+        <resizable>true</resizable>
+        <width>800</width>
+        <height>600</height>
+    </initialWindow> 
+    <installFolder>FQL Editor</installFolder>
+    <programMenuFolder>FQL Editor</programMenuFolder>
+    <customUpdateUI>false</customUpdateUI>
+    <allowBrowserInvocation>false</allowBrowserInvocation>
+</application>
