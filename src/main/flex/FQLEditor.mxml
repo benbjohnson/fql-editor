@@ -17,7 +17,9 @@
 		import flash.net.URLRequest;
 		
 		//----------------------------------------------------------------------
+		//
 		//	Properties
+		//
 		//----------------------------------------------------------------------
 		
 		[Bindable]
@@ -28,21 +30,12 @@
 
 
 		//----------------------------------------------------------------------
-		//	Events
+		//
+		//	Methods
+		//
 		//----------------------------------------------------------------------
 
-		private function onCreationComplete(event:Event):void
-		{
-			settings.load();
-		}
-
-		private function appIdTextField_onChange(event:Event):void
-		{
-			settings.appId = appIdTextField.text;
-			settings.save();
-		}
-
-		private function runButton_onClick(event:MouseEvent):void
+		private function run():void
 		{
 			// Create request url
 			var request:URLRequest = new URLRequest();
@@ -75,8 +68,46 @@
 			CursorManager.setBusyCursor();
 		}
 
+		
+		//----------------------------------------------------------------------
+		//
+		//	Events
+		//
+		//----------------------------------------------------------------------
+
+		private function onCreationComplete(event:Event):void
+		{
+			settings.load();
+			queryTextField.setFocus();
+		}
+
+		private function queryTextField_onKeyDown(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.ENTER) {
+				run();
+				event.preventDefault();
+			}
+		}
+
+		private function appIdTextField_onChange(event:Event):void
+		{
+			settings.appId = appIdTextField.text;
+			settings.save();
+		}
+
+		private function runButton_onClick(event:MouseEvent):void
+		{
+			run();
+		}
+
 		]]>
 	</fx:Script>
+	
+	<fx:Style>
+		global {
+			focusThickness: 0;
+		}
+	</fx:Style>
 	
 	<fx:Declarations>
 		<fx:Array id="tables">
@@ -190,6 +221,7 @@
 				<mx:TextArea id="queryTextField"
 					width="100%" height="100%"
 					fontFamily="Courier New"
+					keyDown="queryTextField_onKeyDown(event)"
 				/>
 				<mx:Spacer height="2"/>
 				<mx:HBox width="100%" horizontalGap="0" verticalAlign="middle">
