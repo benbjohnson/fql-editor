@@ -1,0 +1,553 @@
+<?xml version="1.0"?>
+<schema>
+  <table name="album">
+    <column name="aid" indexable="true" type="string" description="The ID of the album being queried. The aid cannot be longer than 50 characters. Note: Because the aid is a string, you should always wrap the aid in quotes when referenced in a query. The aid is unique only for a given user."/>
+    <column name="owner" indexable="true" type="int" description="The user ID of the owner of the album being queried."/>
+    <column name="cover_pid" indexable="true" type="string" description="The ID of the photo used as the cover for the album being queried. The cover_pid cannot be longer than 50 characters. Note: Because the cover_pid is a string, you should always wrap the cover_pid in quotes when referenced in a query."/>
+    <column name="name" indexable="false" type="string" description="The name of the album being queried."/>
+    <column name="created" indexable="false" type="time" description="The date that the album being queried was created."/>
+    <column name="modified" indexable="false" type="time" description="The date that the album being queried was last updated."/>
+    <column name="description" indexable="false" type="string" description="The description of the album being queried."/>
+    <column name="location" indexable="false" type="string" description="The location for the album being queried."/>
+    <column name="size " indexable="false" type="int" description="The number of photos in the album being queried."/>
+    <column name="link" indexable="false" type="string" description="The URL to the album being queried."/>
+    <column name="visible" indexable="false" type="string" description="Indicates who can see the album. The value can be one of friends, friends-of-friends, networks, everyone, or custom (if the visibility doesn't match any of the other values). This information is available only to the album owner."/>
+    <column name="modified_major" indexable="false" type="time" description="Indicates the time a major update (like addition of photos) was last made to the album."/>
+    <column name="edit_link" indexable="false" type="string" description="The URL for editing the album."/>
+    <column name="type" indexable="false" type="string" description="The type of photo album. Can be one of: profile: The album containing profile pictures mobile: The album containing mobile upload photos wall The album containing photos posted to a user's Wall normal: For all other albums."/>
+    <column name="object_id" indexable="false" type="int" description="The object_id of the album on Facebook. Use the object_id to let users comment on an album with the Comments API."/>
+    <column name="can_upload" indexable="false" type="bool" description="Determines whether a given UID can upload to the album. It is true if the following conditions are met: * The user owns the album. * The album is not a special album like the profile pic album. * The album is not full."/>
+  </table>
+  <table name="application">
+    <column name="app_id" indexable="true" type="int" description="The ID of the application being queried."/>
+    <column name="api_key" indexable="true" type="string" description="The API key of the application being queried."/>
+    <column name="canvas_name" indexable="true" type="string" description="The string appended to apps.facebook.com/ to navigate to the application's canvas page."/>
+    <column name="display_name" indexable="false" type="string" description="The name of the application."/>
+    <column name="icon_url" indexable="false" type="string" description="The URL identifying the application's icon image."/>
+    <column name="logo_url" indexable="false" type="string" description="The URL identifying the application's logo image."/>
+    <column name="company_name" indexable="false" type="string" description="The name of the company that built the application. Note: Only one of company_name and developers will contain data, never both."/>
+    <column name="developers" indexable="false" type="string" description="A list of records, where each record identifies a Facebook user who is marked as a developer of the application. Note: Only one of company_name and developers will contain data, never both."/>
+    <column name="description " indexable="false" type="string" description="The description of the application, as provided by the developer."/>
+    <column name="daily_active_users" indexable="false" type="int" description="The number of Facebook users who've used the application in the last day."/>
+    <column name="weekly_active_users" indexable="false" type="int" description="The number of Facebook users who've used the application in the last seven days."/>
+    <column name="monthly_active_users" indexable="false" type="int" description="The number of Facebook users who've used the application in the last 30 days."/>
+    <column name="category" indexable="false" type="string" description="The category the application can be found under."/>
+    <column name="subcategory" indexable="false" type="string" description="The subcategory the application can be found under."/>
+  </table>
+  <table name="checkin">
+    <column name="checkin_id" indexable="true" type="int" description="The ID of the check-in in the stream."/>
+    <column name="author_uid" indexable="true" type="int" description="The ID of the user making the checkin."/>
+    <column name="page_id" indexable="true" type="int" description="The ID of the Page representing the location."/>
+    <column name="app_id" indexable="false" type="int" description="The ID of the application that made the checkin."/>
+    <column name="post_id" indexable="false" type="int" description="The ID of the post in the stream."/>
+    <column name="coords" indexable="false" type="array" description="An array containing the latitude, longitude, and accuracy of the location."/>
+    <column name="timestamp" indexable="false" type="time" description="A Unix timestamp of the checkin."/>
+    <column name="tagged_uids" indexable="false" type="array" description="An array of user IDs of users tagged in the checkin."/>
+    <column name="message" indexable="false" type="string" description="The message the author posted with the checkin."/>
+  </table>
+  <table name="comment">
+    <column name="xid" indexable="true" type="string" description="The external ID of the fb:comments being queried. You can specify more than one XID."/>
+    <column name="object_id" indexable="true" type="string" description="The object_id of an object on Facebook. This can be a video, note, link, photo, or photo album. Note that for photos and albums, the object_id must be queried from the photo and album FQL tables. Note that in the photo and album tables, object_id is a different field from pid and aid. You must specify either an xid or an object_id."/>
+    <column name="post_id" indexable="true" type="string" description="The ID of the post in the stream."/>
+    <column name="fromid" indexable="false" type="int" description="The user submitting a comment."/>
+    <column name="time" indexable="false" type="int" description="A Unix timestamp associated with the creation time of a comment."/>
+    <column name="text" indexable="false" type="string" description="The text of a comment."/>
+    <column name="id" indexable="false" type="int" description="A unique ID for a given XID for each comment."/>
+    <column name="username " indexable="false" type="string" description="The user name that a user entered when they posted a comment. In these cases, the fromid returned will be 0. Note that user names for valid users are not returned here."/>
+    <column name="reply_xid" indexable="false" type="string" description="The target XID for Feed stories generated by the user; applications can retrieve comments made to that story by calling this XID."/>
+  </table>
+  <table name="comments_info">
+    <column name="app_id" indexable="true" type="string" description="The application ID. You can specify more than one application ID."/>
+    <column name="xid" indexable="false" type="string" description="The [XID|external ID] of the fb:comments object being queried."/>
+    <column name="count" indexable="false" type="int" description="The number of comments associated with an XID."/>
+    <column name="updated_time" indexable="false" type="int" description="A Unix timestamp indicating the most recent time a comment was made."/>
+  </table>
+  <table name="connection">
+    <column name="source_id" indexable="true" type="int" description="The ID of the user, the source of the connection."/>
+    <column name="target_id" indexable="false" type="int" description="The target(s) of the connection. The ID of the friend or Facebook Page with whom the specified user is either a friend or fan/supporter."/>
+    <column name="target_type" indexable="false" type="string" description="Indicates whether the target is a user or a page."/>
+    <column name="is_following" indexable="false" type="bool" description="Indicates whether the source is connected to the target Page (for example, if the source is a supporter or fan)."/>
+    <column name="updated_time" indexable="false" type="time" description="The most recent time the connection was updated."/>
+    <column name="is_deleted" indexable="false" type="bool" description="Indicates whether the source severed the connection."/>
+  </table>
+  <table name="cookies">
+    <column name="uid" indexable="true" type="int" description="The user ID associated with the cookie."/>
+    <column name="name" indexable="false" type="string" description="The name of the cookie."/>
+    <column name="value" indexable="false" type="string" description="The value of the cookie."/>
+    <column name="expires" indexable="false" type="int" description="Time stamp when the cookie should expire. If not specified, the cookie never expires."/>
+    <column name="path" indexable="false" type="string" description="Path relative to the application's callback URL, with which the cookie should be associated. Default value is /"/>
+  </table>
+  <table name="developer">
+    <column name="developer_id" indexable="true" type="string" description="The user ID of the application developer being queried."/>
+    <column name="application_id" indexable="false" type="int" description="The application ID of any applications associated with the developer."/>
+  </table>
+  <table name="domain">
+    <column name="domain_id" indexable="true" type="int" description="The domain id."/>
+    <column name="domain_name" indexable="true" type="string" description="The domain name."/>
+  </table>
+  <table name="domain_admin">
+    <column name="owner_id" indexable="true" type="int" description="The ID of the profile who owns the domain. This can be a page, application, or user ID."/>
+    <column name="domain_id" indexable="true" type="int" description="The ID of the domain being queried."/>
+  </table>
+  <table name="event">
+    <column name="eid" indexable="true" type="int" description="The ID of the event being queried."/>
+    <column name="name" indexable="false" type="string" description="The name of the event being queried."/>
+    <column name="tagline" indexable="false" type="string" description="The tagline or summary of the event being queried."/>
+    <column name="nid" indexable="false" type="int" description="The network ID of the event being queried."/>
+    <column name="pic_small" indexable="false" type="string" description="The URL to the small-sized profile picture for the event being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_big" indexable="false" type="string" description="The URL to the largest-sized profile picture for the event being queried. The image can have a maximum width of 200px and a maximum height of 600px. This URL may be blank."/>
+    <column name="pic" indexable="false" type="string" description="The URL to the medium-sized profile picture for the event being queried. The image can have a maximum width of 100px and a maximum height of 300px. This URL may be blank."/>
+    <column name="host" indexable="false" type="string" description="The name of the host of the event being queried."/>
+    <column name="description" indexable="false" type="string" description="The description of the event being queried."/>
+    <column name="event_type" indexable="false" type="string" description="The category of the event being queried. For a listing, see Event Categories."/>
+    <column name="event_subtype" indexable="false" type="string" description="The event type for the event being queried. For a listing, see Event Categories."/>
+    <column name="start_time" indexable="false" type="time" description="The starting date and time of the event being queried."/>
+    <column name="end_time" indexable="false" type="time" description="The ending date and time of the event being queried."/>
+    <column name="creator" indexable="false" type="int" description="The user ID of the creator of the event being queried."/>
+    <column name="update_time" indexable="false" type="time" description="The time that the event being queried was last updated."/>
+    <column name="location" indexable="false" type="string" description="The location of the event being queried."/>
+    <column name="venue" indexable="false" type="string" description="The venue where the event being queried is being held."/>
+    <column name="privacy" indexable="false" type="string" description="The privacy setting of the event being queried, indicating whether the event is OPEN, CLOSED, or SECRET."/>
+    <column name="hide_guest_list" indexable="false" type="bool" description="Indicates whether to hide the guest list on the event's page, where true means to hide the guest list."/>
+  </table>
+  <table name="event_member">
+    <column name="uid" indexable="true" type="int" description="The user ID of the user for the event being queried."/>
+    <column name="eid" indexable="true" type="int" description="The ID of the event being queried."/>
+    <column name="rsvp_status" indexable="false" type="string" description="The reply status of the user for the event being queried. There are four possible return values: attending, unsure, declined, and not_replied."/>
+  </table>
+  <table name="family">
+    <column name="profile_id" indexable="true" type="int" description="The ID of the user being queried."/>
+    <column name="uid" indexable="false" type="int" description="The user ID of the relative, which is returned if the relationship is confirmed and links to another profile."/>
+    <column name="name" indexable="false" type="string" description="The name of the relative, which is returned if the relationship is not linked to another profile."/>
+    <column name="birthday" indexable="false" type="string" description="The birthday of the relative, which is returned if the relationship is not linked to another profile."/>
+    <column name="relationship" indexable="false" type="string" description="A string describing how the relative is related to the user being queried."/>
+  </table>
+  <table name="friend">
+    <column name="uid1" indexable="true" type="int" description="The user ID of the first user in the pair being queried."/>
+    <column name="uid2" indexable="true" type="int" description="The user ID of the second user in the pair being queried."/>
+  </table>
+  <table name="friend_request">
+    <column name="uid_from" indexable="false" type="int" description="The user ID of the user making the friend request."/>
+    <column name="uid_to" indexable="true" type="int" description="The user ID of the user receiving the friend request (which must be the logged-in user if uid_from is not the logged-in user)."/>
+  </table>
+  <table name="friendlist">
+    <column name="owner" indexable="true" type="int" description="The user ID of the user who created the friend list."/>
+    <column name="flid" indexable="false" type="int" description="The ID of the friend list."/>
+    <column name="name" indexable="false" type="string" description="The name of the friend list."/>
+  </table>
+  <table name="friendlist_member">
+    <column name="flid" indexable="true" type="int" description="The ID of the friend list."/>
+    <column name="uid" indexable="false" type="int" description="The user ID of the friend list member."/>
+  </table>
+  <table name="group">
+    <column name="gid" indexable="true" type="int" description="The group ID of the group being queried."/>
+    <column name="name" indexable="false" type="string" description="The name of the group being queried."/>
+    <column name="nid" indexable="false" type="int" description="The network ID for the network to which the group being queried belongs, if any."/>
+    <column name="pic_small" indexable="false" type="string" description="The URL to the smallest-sized photo for the group being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_big" indexable="false" type="string" description="The largest-sized photo for the group being queried. The image can have a maximum width of 200px and a maximum height of 600px. This URL may be blank."/>
+    <column name="pic" indexable="false" type="string" description="The medium-sized photo for the group being queried. The image can have a maximum width of 100px and a maximum height of 300px. This URL may be blank."/>
+    <column name="description" indexable="false" type="string" description="The description of the group being queried."/>
+    <column name="group_type" indexable="false" type="string" description="The category of the group being queried."/>
+    <column name="group_subtype" indexable="false" type="string" description="The group type for the group being queried."/>
+    <column name="recent_news" indexable="false" type="string" description="The contents of the Recent News field of the group being queried."/>
+    <column name="creator" indexable="false" type="int" description="The user ID of the user who created the group being queried."/>
+    <column name="update_time" indexable="false" type="time" description="The last time the group being queried was updated."/>
+    <column name="office" indexable="false" type="string" description="The location of the office of the group being queried."/>
+    <column name="website" indexable="false" type="string" description="The URL for the Web site of the group being queried."/>
+    <column name="venue" indexable="false" type="object" description="The venue of the group being queried. This is an object containing street, city, state, country, zip, latitude, and longitude fields."/>
+    <column name="privacy" indexable="false" type="string" description="The privacy setting of the group being queried, indicating whether the group is OPEN, CLOSED, or SECRET."/>
+    <column name="version" indexable="false" type="string" description="The group version. New groups are versioned &gt; 0."/>
+  </table>
+  <table name="group_member">
+    <column name="uid" indexable="true" type="int" description="The user ID of the member of the group being queried."/>
+    <column name="gid" indexable="true" type="int" description="The ID of the group being queried."/>
+    <column name="positions" indexable="false" type="string" description="Any positions taken by the member of the group being queried."/>
+  </table>
+  <table name="insights">
+    <column name="object_id" indexable="true" type="int" description="The object for which you are retrieving metrics."/>
+    <column name="metric" indexable="true" type="string" description="The usage data to retrieve."/>
+    <column name="end_time" indexable="true" type="int" description="The end of the period during which the metrics were collected, expressed as a unix time."/>
+    <column name="period" indexable="true" type="int" description="The length of the period during which the metrics were collected, in seconds."/>
+    <column name="value" indexable="false" type="mixed" description="The value of the requested metric."/>
+  </table>
+  <table name="like">
+    <column name="object_id" indexable="true" type="string" description="The object_id of an object on Facebook. This can be a video, note, link,&#xA0;photo, or photo album. Note that for photos and albums, the object_id must be queried from the photo and album FQL tables. Note that the object_id is a different field from the photo table's pid field and the album table's aid field."/>
+    <column name="post_id" indexable="true" type="string" description="The id of a post on Facebook. This can be a stream post containing a status, video, note, link, photo, or photo album. These post IDs must be queried from the stream FQL table."/>
+    <column name="user_id" indexable="false" type="int" description="The user who likes this object."/>
+  </table>
+  <table name="link">
+    <column name="link_id" indexable="true" type="int" description="The unique identifier for the link."/>
+    <column name="owner" indexable="true" type="int" description="The user ID for the user who posted the link."/>
+    <column name="owner_comment" indexable="false" type="string" description="The comment the owner made about the link."/>
+    <column name="created_time" indexable="false" type="time" description="The time the user posted the link."/>
+    <column name="title" indexable="false" type="string" description="The title of the link, as taken from the site's title meta tag."/>
+    <column name="summary" indexable="false" type="string" description="A summary of the link, as taken from the site's description meta tag."/>
+    <column name="url" indexable="false" type="string" description="The actual URL for the link."/>
+    <column name="image_urls" indexable="false" type="array" description="The URLs to the images associated with the link, as taken from the site's link tag."/>
+  </table>
+  <table name="link_stat">
+    <column name="url" indexable="true" type="string" description="The URL to the Web page users can share with Facebook Share. This is the indexable field in the table, so you must specify it in your query's WHERE clause. To specify more than one URL, you must use the IN operator in the query's WHERE clause."/>
+    <column name="normalized_url" indexable="false" type="string" description="The normalized URL for the page being shared."/>
+    <column name="share_count" indexable="false" type="string" description="The number of times users have shared the page on Facebook."/>
+    <column name="like_count" indexable="false" type="string" description="The number of times Facebook users have &quot;Liked&quot; the page."/>
+    <column name="comment_count" indexable="false" type="string" description="The number of comments users have made on the shared story."/>
+    <column name="total_count" indexable="false" type="string" description="The total number of times the URL has been shared, liked, or commented on."/>
+  </table>
+  <table name="mailbox_folder">
+    <column name="folder_id" indexable="true" type="int" description="The ID of the folder being queried. The ID can be one of: 0 (for Inbox), 1 (for Outbox), or 4 (for Updates)."/>
+    <column name="viewer_id" indexable="true" type="int" description="The ID of the user whose Inbox you are querying."/>
+    <column name="name" indexable="false" type="string" description="A short description of the folder being queried."/>
+    <column name="unread_count" indexable="false" type="int" description="The number of unread threads in the folder being queried."/>
+  </table>
+  <table name="message">
+    <column name="message_id" indexable="true" type="string" description="A unique ID for the message being queried."/>
+    <column name="thread_id" indexable="true" type="int" description="The ID of the thread the message belongs to."/>
+    <column name="author_id" indexable="false" type="int" description="The ID of the user who wrote this message."/>
+    <column name="body" indexable="false" type="string" description="The content of the message."/>
+    <column name="created_time" indexable="false" type="int" description="The time the message was sent."/>
+    <column name="attachment" indexable="false" type="array" description="An array of information about the attachment to the message. This is the attachment that Facebook returns."/>
+    <column name="viewer_id" indexable="false" type="int" description="The ID of the user whose Inbox you are querying. Defaults to session user."/>
+  </table>
+  <table name="note">
+    <column name="uid" indexable="true" type="int" description="The user ID of the current user."/>
+    <column name="note_id" indexable="true" type="int" description="The unique identifier for the note."/>
+    <column name="created_time" indexable="false" type="time" description="The time the user created the note."/>
+    <column name="updated_time" indexable="false" type="time" description="The most recent time the user edited the note."/>
+    <column name="content" indexable="false" type="string" description="The body of the note."/>
+    <column name="title" indexable="false" type="string" description="The title of the note."/>
+  </table>
+  <table name="notification">
+    <column name="notification_id" indexable="false" type="int" description="The ID of the notification. This ID is not globally unique, so the recipient_id must be specified in addition to it."/>
+    <column name="sender_id" indexable="false" type="int" description="The user ID of the sender of the notification."/>
+    <column name="recipient_id" indexable="true" type="int" description="The user ID of the recipient of the notification. It is always the current session user."/>
+    <column name="created_time" indexable="false" type="time" description="The time the notification was originally sent. Notifications older than 7 days are deleted and will not be returned via this table or notifications.getList."/>
+    <column name="updated_time" indexable="false" type="time" description="The time the notification was originally sent, or the time the associated application's notifications were hidden or unhidden by the user, whichever is later."/>
+    <column name="title_html" indexable="false" type="string" description="The main body of the notification in HTML."/>
+    <column name="title_text" indexable="false" type="string" description="The plaintext version of title_html, with all HTML tags stripped out."/>
+    <column name="body_html" indexable="false" type="string" description="Any additional content the notification includes, in HTML."/>
+    <column name="body_text" indexable="false" type="string" description="The plaintext version of body_html, with all HTML tags stripped out."/>
+    <column name="href" indexable="false" type="string" description="The URL associated with the notification. This is usually a location where the user can interact with the subject of the notification."/>
+    <column name="app_id" indexable="false" type="int" description="The ID of the application associated with the notification. This may be a third-party application or a Facebook application (for example, Wall)."/>
+    <column name="is_unread" indexable="false" type="bool" description="Indicates whether the notification has been marked as read. Use notifications.markRead to mark a notification as read."/>
+    <column name="is_hidden" indexable="false" type="bool" description="Indicates whether the user hid the associated application's notifications."/>
+  </table>
+  <table name="object_url">
+    <column name="url" indexable="true" type="string" description="The URL for the webpage being queried"/>
+    <column name="id" indexable="true" type="int" description="The ID of the Graph object represented by the URL"/>
+    <column name="type" indexable="false" type="string" description="The type of object the URL represents (note: 'Page' incorporates any URL with an 'og:type' specified)"/>
+    <column name="site" indexable="false" type="string" description="The normalized domain name the URL is on"/>
+  </table>
+  <table name="page">
+    <column name="page_id" indexable="true" type="int" description="The ID of the Page being queried."/>
+    <column name="name" indexable="true" type="string" description="The name of the Page being queried."/>
+    <column name="pic_small" indexable="false" type="string" description="The URL to the small-sized picture for the Page being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_big" indexable="false" type="string" description="The URL to the large-sized profile picture for the Page being queried. The image can have a maximum width of 200px and a maximum height of 600px. This URL may be blank."/>
+    <column name="pic_square" indexable="false" type="string" description="The URL to the square profile picture for the Page being queried. The image can have a maximum width and height of 50px. This URL may be blank."/>
+    <column name="pic" indexable="false" type="string" description="The URL to the medium-sized profile picture for the Page being queried. The image can have a maximum width of 100px and a maximum height of 300px. This URL may be blank."/>
+    <column name="pic_large" indexable="false" type="string" description="The URL to the largest-sized profile picture for the Page being queried. The image can have a maximum width of 396px and a maximum height of 1188px. This URL may be blank."/>
+    <column name="page_url" indexable="false" type="string" description="The profile URL for the Page being queried. If the Page admin specified a username for the Page, page_url contains the username."/>
+    <column name="type" indexable="false" type="string" description="The type of Page being queried."/>
+    <column name="website" indexable="false" type="string" description="The URL to the Web site of of the Page being queried."/>
+    <column name="has_added_app" indexable="false" type="bool" description="Indicates whether a calling application has been added by the Page being queried."/>
+    <column name="founded" indexable="false" type="string" description="The date when the subject of the Page being queried was founded. This field may be blank."/>
+    <column name="company_overview" indexable="false" type="string" description="Summary of the subject of the Page being queried. This field may be blank."/>
+    <column name="mission" indexable="false" type="string" description="The mission statement of the organization that is the subject of the Page being queried. This field may be blank."/>
+    <column name="products" indexable="false" type="string" description="The products offered by the company on the Page being queried. This field may be blank."/>
+    <column name="location" indexable="false" type="string" description="The location of the Page being queried, including the street, city, state, country and zip (or post code). Some of the fields may be blank."/>
+    <column name="parking" indexable="false" type="string" description="The type of parking available at the location of the Page being queried."/>
+    <column name="public_transit" indexable="false" type="string" description="The type of public transportation available near the location of the Page being queried. This field may be blank."/>
+    <column name="hours" indexable="false" type="string" description="The hours of operation for the Page being queried."/>
+  </table>
+  <table name="page_admin">
+    <column name="uid" indexable="true" type="int" description="The user ID for the admin of the Page being queried."/>
+    <column name="page_id" indexable="false" type="int" description="The ID of the Page being queried."/>
+    <column name="type" indexable="false" type="string" description="The type of Page being queried."/>
+  </table>
+  <table name="page_fan">
+    <column name="uid" indexable="true" type="int" description="The user ID for the fan of the Page being queried."/>
+    <column name="page_id" indexable="false" type="int" description="The ID of the Page being queried."/>
+    <column name="type" indexable="false" type="string" description="The type of Page being queried."/>
+    <column name="created_time" indexable="false" type="time" description="The unix time when the user liked (aka 'fanned') this page"/>
+  </table>
+  <table name="permissions">
+    <column name="uid" indexable="true" type="int" description="The user ID of the current user, or the page_id of the Page."/>
+    <column name="PERMISSION_NAME" indexable="false" type="bool" description="Indicates whether the user granted your application the extended permission. You can see the list of permissions here."/>
+  </table>
+  <table name="permissions_info">
+    <column name="permission_name" indexable="true" type="string" description="The name of the extended permission."/>
+    <column name="header" indexable="false" type="string" description="A descriptive header for the extended permission."/>
+    <column name="summary" indexable="false" type="string" description="A longer description of the permission."/>
+  </table>
+  <table name="photo">
+    <column name="pid" indexable="true" type="string" description="The ID of the photo being queried. The pid cannot be longer than 50 characters. Note: Because the pid is a string, you should always wrap the pid in quotes when referenced in a query. The pid is unique only for a given user."/>
+    <column name="aid" indexable="true" type="string" description="The ID of the album containing the photo being queried. The aid cannot be longer than 50 characters. Note: Because the aid is a string, you should always wrap the aid in quotes when referenced in a query. The aid is unique only for a given user."/>
+    <column name="owner" indexable="false" type="int" description="The user ID of the owner of the photo being queried."/>
+    <column name="src_small" indexable="false" type="string" description="The URL to the thumbnail version of the photo being queried. The image can have a maximum width of 75px and a maximum height of 225px. This URL may be blank."/>
+    <column name="src_small_height" indexable="false" type="string" description="Height of the thumbnail version, in px. This field may be blank."/>
+    <column name="src_small_width" indexable="false" type="string" description="Width of the thumbnail version, in px. This field may be blank."/>
+    <column name="src_big" indexable="false" type="string" description="The URL to the full-sized version of the photo being queried. The image can have a maximum width or height of 720px. This URL may be blank."/>
+    <column name="src_big_height" indexable="false" type="string" description="Height of the full-sized version, in px. This field may be blank."/>
+    <column name="src_big_width" indexable="false" type="string" description="Width of the full-sized version, in px. This field may be blank."/>
+    <column name="src" indexable="false" type="string" description="The URL to the album view version of the photo being queried. The image can have a maximum width or height of 130px. This URL may be blank."/>
+    <column name="src_height" indexable="false" type="string" description="Height of the album view version, in px. This field may be blank."/>
+    <column name="src_width" indexable="false" type="string" description="Width of the album view version, in px. This field may be blank."/>
+    <column name="link" indexable="false" type="string" description="The URL to the page containing the photo being queried."/>
+    <column name="caption" indexable="false" type="string" description="The caption for the photo being queried."/>
+    <column name="created" indexable="false" type="time" description="The date when the photo being queried was added."/>
+    <column name="modified" indexable="false" type="time" description="The date when the photo being queried was last modified."/>
+    <column name="object_id" indexable="false" type="int" description="The object_id of a photo on Facebook. Use the object_id to let users comment on a photo with the Comments API."/>
+  </table>
+  <table name="photo_tag">
+    <column name="pid" indexable="true" type="string" description="The ID of the photo being queried. The pid cannot be longer than 50 characters. Note: Because the pid is a string, you should always wrap the pid in quotes when referenced in a query."/>
+    <column name="subject" indexable="true" type="int" description="For tagged users, use the user ID of the subject for the tag being queried. For photos associated with events or groups, use the eid or gid for subject."/>
+    <column name="text" indexable="false" type="string" description="The content of the tag being queried."/>
+    <column name="xcoord" indexable="false" type="float" description="The center of the tag's horizontal position, measured as a floating-point percentage from 0 to 100, from the left edge of the photo."/>
+    <column name="ycoord" indexable="false" type="float" description="The center of the tag's vertical position, measured as a floating-point percentage from 0 to 100, from the top edge of the photo."/>
+    <column name="created" indexable="false" type="time" description="The date that the tag being queried was created."/>
+  </table>
+  <table name="place">
+    <column name="page_id" indexable="true" type="string" description="The Facebook Page ID of the place"/>
+    <column name="name" indexable="false" type="string" description="The name of the place."/>
+    <column name="description" indexable="false" type="string" description="The description of the place."/>
+    <column name="geometry" indexable="false" type="array" description="An array describing where the location exists, in GeoJSON format. (This could be a point, a polygon, or other types of geometries.)"/>
+    <column name="latitude" indexable="false" type="int" description="The latitude of the location."/>
+    <column name="longitude" indexable="false" type="int" description="The longitude of the location."/>
+    <column name="checkin_count" indexable="false" type="int" description="The number of times users have checked into the location."/>
+  </table>
+  <table name="privacy">
+    <column name="object_id" indexable="true" type="string" description="The ID of an object on Facebook. This can be a video, note, link, photo, or photo album."/>
+    <column name="id" indexable="false" type="string" description="The object ID (this is an alias for the &quot;object_id&quot; column)."/>
+    <column name="value " indexable="false" type="string" description="The privacy value for the object, one of EVERYONE, CUSTOM, ALL_FRIENDS, NETWORKS_FRIENDS, FRIENDS_OF_FRIENDS."/>
+    <column name="description" indexable="false" type="string" description="A description of the privacy settings. For CUSTOM settings, it can contain names of users, networks, and friend lists."/>
+    <column name="allow" indexable="false" type="string" description="The IDs of the specific users or friend lists that can see the object (as a comma-separated string)."/>
+    <column name="deny" indexable="false" type="string" description="The IDs of the specific users or friend lists that cannot see the object (as a comma-separated string)."/>
+    <column name="owner_id" indexable="false" type="int" description="The ID of the user who owns the object."/>
+    <column name="networks" indexable="false" type="int" description="The ID of the network that can see the object, or 1 for all of the user's networks."/>
+    <column name="friends" indexable="false" type="string" description="Which users can see the object. Can be one of EVERYONE, NETWORKS_FRIENDS, FRIENDS_OF_FRIENDS, ALL_FRIENDS, SOME_FRIENDS, SELF, or NO_FRIENDS."/>
+  </table>
+  <table name="profile">
+    <column name="id" indexable="true" type="int" description="A 64-bit int representing the user ID or Page ID."/>
+    <column name="name" indexable="false" type="string" description="The full name of the user or Page being queried."/>
+    <column name="url" indexable="false" type="string" description="The URL to a user's profile or Page. If the user or Page has a username, url contains the username."/>
+    <column name="pic" indexable="false" type="string" description="The URL to the small-sized profile picture for the user or Page being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_square" indexable="false" type="string" description="The URL to the square profile picture for the user or Page being queried. The image can have a maximum width and height of 50px. This URL may be blank."/>
+    <column name="pic_small" indexable="false" type="string" description="The URL to the small-sized profile picture for the user or Page being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_big" indexable="false" type="string" description="The URL to the largest-sized profile picture for the user or Page being queried. The image can have a maximum width of 200px and a maximum height of 600px. This URL may be blank."/>
+    <column name="type" indexable="false" type="string" description="The type of profile, either user for a user profile or page for a Facebook Page."/>
+    <column name="username" indexable="true" type="string" description="The username of the user being queried."/>
+  </table>
+  <table name="standard_friend_info">
+    <column name="uid1" indexable="true" type="int" description="The user ID of the first user in the pair being queried."/>
+    <column name="uid2" indexable="true" type="int" description="The user ID of the second user in the pair being queried."/>
+  </table>
+  <table name="standard_user_info">
+    <column name="uid" indexable="true" type="int" description="The user ID of the user being queried."/>
+    <column name="first_name" indexable="false" type="string" description="The first name of the user being queried."/>
+    <column name="last_name" indexable="false" type="string" description="The last name of the user being queried."/>
+    <column name="name" indexable="true" type="string" description="The full name of the user being queried."/>
+    <column name="locale" indexable="false" type="string" description="The two-letter country code for the user's locale. Codes used are the ISO 3166 alpha 2 code list."/>
+    <column name="affiliations" indexable="false" type="array" description="The corporate or educational networks to which the user being queried belongs. Regional networks have been deprecated and are no longer returned."/>
+    <column name="profile_url" indexable="false" type="string" description="The URL to a user's profile."/>
+    <column name="timezone" indexable="false" type="string" description="The time zone where the user being queried is located."/>
+    <column name="birthday" indexable="false" type="string" description="The birthday of the user being queried."/>
+    <column name="sex" indexable="false" type="string" description="The sex of the user being queried."/>
+    <column name="proxied_email" indexable="false" type="string" description="The proxied wrapper for a user's email address."/>
+    <column name="current_location" indexable="false" type="string" description="The city in which the user currently lives."/>
+    <column name="allowed_restrictions" indexable="false" type="string" description="A comma delimited list of Demographic Restrictions types a user is allowed to access. Currently, alcohol is the only type that can be returned."/>
+  </table>
+  <table name="status">
+    <column name="uid" indexable="true" type="int" description="The user ID of the current user."/>
+    <column name="status_id" indexable="false" type="string" description="The ID of the status message."/>
+    <column name="time" indexable="false" type="string" description="The date and time the status message was posted."/>
+    <column name="source" indexable="false" type="string" description="The application that published the status originally."/>
+    <column name="message" indexable="false" type="string" description="The content of the status message."/>
+  </table>
+  <table name="stream">
+    <column name="post_id" indexable="true" type="string" description="The ID of the post from the user's stream. This field, when used as an index, is primarily used to re-retrieve posts. Otherwise, it is used to specify a post when using any of the stream setters."/>
+    <column name="viewer_id " indexable="false" type="int" description="The ID of the user whose stream you are querying. The viewer_id defaults to the active session key."/>
+    <column name="app_id" indexable="true" type="int" description="The application ID for the application through which the post was published. This includes application IDs for Facebook applications like Photos and Video."/>
+    <column name="source_id " indexable="true" type="int" description="The ID of the user, Page, group, or event whose posts you want to retrieve. This includes both posts that the user or Page has authored (that is, the actor_id is the source_id) and posts that have been directed at this target user, Page, group, or event (that is, the target_id is the source_id)."/>
+    <column name="updated_time" indexable="false" type="time" description="The time the post was last updated, which occurs when a user comments on the post."/>
+    <column name="created_time" indexable="false" type="time" description="The time the post was published to the user's stream."/>
+    <column name="filter_key" indexable="true" type="string" description="The filter key to fetch data with. This key should be retrieved from stream.getFilters or querying the stream_filter FQL table."/>
+    <column name="attribution " indexable="false" type="string" description="For posts published by applications, this is the string that states through which application the post was published. For example, &quot;Joe loves the Social Web (by MicroBloggerApp).&quot;"/>
+    <column name="actor_id" indexable="false" type="string" description="The user ID of the person who is the user taking the action in the post."/>
+    <column name="target_id" indexable="false" type="string" description="The user or Page to whom the post was directed."/>
+    <column name="message" indexable="false" type="string" description="The message written by the user."/>
+    <column name="app_data" indexable="false" type="array" description="An array of application-specific information supplied to Facebook to create the attachment to the post. This information is not needed to render a user's stream in your application, unless you need this information for special handing of your own application posts. This array includes: tbid (i64): A 64-bit int representing the template bundle ID, for posts that entered the stream through the now discontinued method feed.publishUserAction and similar calls that are not stream publishing methods (like stream.publish or Facebook.streamPublish). attachment_data (array): An array containing the template data, for posts that entered the stream through the now discontinued method feed.publishUserAction and similar calls that are not stream publishing methods (like stream.publish or Facebook.streamPublish). images (array): A JSON-encoded object containing any images associated with the story. These images are specified in Attachment (Streams) (and used to be specified in Template Data, if an application used a now discontinued method like feed.publishUserAction to create the post originally). action_links (array): An array containing the text and URL for each action link."/>
+    <column name="action_links" indexable="false" type="array" description="An array containing the text and URL for each action link."/>
+    <column name="attachment" indexable="false" type="array" description="An array of information about the attachment to the post. This is the attachment that Facebook returns."/>
+    <column name="comments" indexable="false" type="array" description="A sample array of comments added to a post. This list contains up to two comments to display along with stream content. To get the full list of comments, use stream.getComments or query the comment FQL table using the post_id of this post. The array contains the following fields: can_remove (bool): Indicates whether users can remove comments. can_post (bool): Indicates whether users can post comments. count (i32): The total number of comments added to the post. comment_list (array): A list of comment-type comments for this post. Comments are formatted as they would be when returned by the comment (FQL) table."/>
+    <column name="likes" indexable="false" type="array" description="An array of likes associated with the post. The array contains the following fields: href (string): The URL to a page showing the other users who've liked this post. count (i32): The total number of times users like the post. sample (array): A sample of users who like the post. friends (array): A list of the viewing user's friends who like the post. user_likes (bool): Indicates whether the viewing user likes the post. can_like (bool): Indicates whether the post can be liked."/>
+    <column name="privacy" indexable="false" type="array" description="The privacy setting for a post, indicating which of a user's friends or others can see the content."/>
+    <column name="type" indexable="false" type="string" description="Do not use this field as it's been deprecated. To determine what sort of post gets returned, look for the presence of an attachment (lack of an attachment indicates a status update), and if one is present, look at the attachment's media type (photo, Flash, mp3) to determine how you want to handle the post. Facebook for Adobe AIR uses this method, for example."/>
+    <column name="permalink" indexable="false" type="string" description="A link to the stream post."/>
+    <column name="xid" indexable="true" type="int" description="When querying for the feed of a live stream box, this is the xid associated with the Live Stream box (you can provide 'default' if one is not available)."/>
+  </table>
+  <table name="stream_filter">
+    <column name="uid" indexable="true" type="string" description="The ID of the user whose filters you are querying."/>
+    <column name="filter_key " indexable="false" type="string" description="A key identifying a particular filter for a user's stream. This filter is useful to retrieve relevant items from the stream table."/>
+    <column name="name" indexable="false" type="string" description="The name of the filter as it appears on the home page."/>
+    <column name="rank " indexable="false" type="int" description="A 32-bit int that indicates where the filter appears in the sort."/>
+    <column name="icon_url" indexable="false" type="string" description="The URL to the filter icon. For applications, this is the same as your application icon."/>
+    <column name="is_visible" indexable="false" type="bool" description="If true, indicates that the filter is visible on the home page. If false, the filter is hidden in the More link."/>
+    <column name="type" indexable="false" type="string" description="The type of filter. One of application, newsfeed, friendlist, network, or publicprofile."/>
+    <column name="value" indexable="false" type="int" description="A 64-bit ID for the filter type."/>
+  </table>
+  <table name="stream_tag">
+    <column name="post_id" indexable="true" type="string" description="The ID of a post from the user's or Page's stream. This field, when used as an index, is used to retrieve users and the entities they've tagged."/>
+    <column name="actor_id" indexable="true" type="string" description="The user ID of the user or Page who tagged one or more entities in a post. This field, when used as an index, is used to retrieve all the posts and the entities the user has tagged."/>
+    <column name="target_id" indexable="true" type="string" description="The users, Pages, events, and other Facebook objects that have been tagged in one or more posts. This field, when used as an index, is used to retrieve all the entities that have been tagged in one or more posts."/>
+  </table>
+  <table name="thread">
+    <column name="thread_id" indexable="true" type="int" description="The ID of the thread being queried."/>
+    <column name="folder_id" indexable="true" type="int" description="The ID of the folder that belongs to the thread you are querying. The ID can be one of: 0 (for Inbox), 1 (for Outbox), or 4 (for Updates)."/>
+    <column name="subject" indexable="false" type="string" description="The subject of the thread."/>
+    <column name="recipients" indexable="false" type="array" description="The user IDs of the recipients of the thread."/>
+    <column name="updated_time" indexable="false" type="int" description="The created_time of the most recent message in the thread."/>
+    <column name="parent_message_id" indexable="false" type="string" description="The ID of the message from which this thread was branched, or 0 if this thread is not a branch. The parent_message_id is a concatenation of the thread ID and the message ID, joined by an underscore."/>
+    <column name="parent_thread_id" indexable="false" type="int" description="The ID of the thread from which this thread was branched, or 0 if this thread is not a branch."/>
+    <column name="message_count" indexable="false" type="int" description="The number of messages in this thread."/>
+    <column name="snippet" indexable="false" type="string" description="A short bit of text from the most recent message."/>
+    <column name="snippet_author" indexable="false" type="int" description="The user ID of the author of the snippet."/>
+    <column name="object_id" indexable="false" type="int" description="The object that sent this message, or 0 if it was not sent by an object. You can get more information about this object in the profile table."/>
+    <column name="unread" indexable="false" type="int" description="This is 0 if the message is read, and it is higher than that if there are unread messages in the thread."/>
+    <column name="viewer_id" indexable="false" type="int" description="The ID of the user whose Inbox you are querying."/>
+  </table>
+  <table name="translation">
+    <column name="locale" indexable="true" type="string" description="The locale for the translations for which you are querying. See Facebook Locales for the list of currently supported locales. You must specify a single locale in your query."/>
+    <column name="native_hash" indexable="true" type="string" description="A hash of the native string and a description generated by the Translations application. It's a unique identifier for the string. The hash is generated by hashing the concatenation of the string followed by 3 colons, followed by the description, followed by a colon, using the tiger128,3 hashing algorithm. Query on this column to quickly return your application's native strings and their descriptions."/>
+    <column name="native_string" indexable="false" type="string" description="The actual text from your application you previously submitted for translation to the Translations application."/>
+    <column name="description" indexable="false" type="string" description="The description of the native string needing translation. This text clarifies the context in which the text is used, and the meaning if it is ambiguous. This is shown to translators in the bulk translation user interface, among other places, and should describe the text well enough that someone can translate it without seeing it in the context of your application. In general a piece of text should always have a description unless it is a complete sentence whose meaning would be clear to a user who has never seen your application. If a description for the corresponding string or hash doesn't exist in the Translations database, this column returns null."/>
+    <column name="translation" indexable="false" type="string" description="The translation of the native string. If a translation for the corresponding string or hash doesn't exist in the Translations database, this column returns null."/>
+    <column name="approval_status" indexable="false" type="string" description="The approval status of the string. The status is one of: auto-approved: Automatically approved by our system, based on votes. approved: Manually approved by you, another developer of your application, or an authorized translator. unapproved: Not approved in any manner."/>
+    <column name="pre_hash_string" indexable="true" type="string" description="A concatenation of the native string and its description. This string is used to generate the native hash. The native string is concatenated with 3 colons, the description, then another colon. Query on this column if you want to check whether a random string and description exists. A query containing the pre_hash_string runs more slowly than a query containing the native_hash."/>
+    <column name="best_string" indexable="false" type="string" description="The translated string that gets displayed to a user translating your application. The user must be browsing Facebook in the locale of the approved translation. Querying on this column returns either a native string or translated string. If no entry for the corresponding native string exists in the Translations database, this column returns null."/>
+  </table>
+  <table name="unified_message">
+    <column name="message_id" indexable="true" type="string" description="Unique identifier of the message."/>
+    <column name="thread_id" indexable="true" type="string" description="Unique identifier of the thread."/>
+    <column name="subject" indexable="false" type="string" description="Subject of the message."/>
+    <column name="body" indexable="false" type="string" description="Body of the message."/>
+    <column name="unread" indexable="true" type="bool" description="Flag indicating whether the message is unread."/>
+    <column name="timestamp" indexable="true" type="string" description="Last update time of the thread (Unix-type timestamp with millisecond resolution)."/>
+    <column name="tags" indexable="false" type="array" description="Message tags."/>
+    <column name="sender" indexable="false" type="object" description="Sender of the message. This field is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="recipients" indexable="false" type="array" description="List of message recipients. Each element of the list is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="object_sender" indexable="false" type="object" description="Sender of the message in the case that it is a Facebook page, group or event. This field is an object with properties object_address_type (int) and id (string)."/>
+    <column name="html_body" indexable="false" type="string" description="HTML representation of the message body."/>
+    <column name="attachments" indexable="false" type="array" description="List of attachment identifiers. Attachments correspond to any attached file."/>
+    <column name="attachment_map" indexable="false" type="array" description="Map from attachment identifiers to objects containing information about the attachment (file size, type, etc.). Each object has the following properties: id (string), type (int), mime_type (string), filename (string) and file_size (int)."/>
+    <column name="shares" indexable="false" type="array" description="List of share identifiers. Shared items include links, videos, and photos as were supported in the old messaging system."/>
+    <column name="share_map" indexable="false" type="array" description="Map from share identifiers to objects containing information about the shared objects. Each object has the following properties: share_id (string), type (int), href (string), title (string), summary (string) and image (string)."/>
+  </table>
+  <table name="unified_thread">
+    <column name="thread_id" indexable="true" type="string" description="Unique identifier of the thread."/>
+    <column name="unread" indexable="true" type="bool" description="Flag indicating whether the thread contains unread messages."/>
+    <column name="archived" indexable="true" type="bool" description="Flag indicating whether the thread is archived."/>
+    <column name="num_messages" indexable="false" type="int" description="Total number of messages in the thread."/>
+    <column name="num_unread" indexable="false" type="int" description="Number of unread messages."/>
+    <column name="subject" indexable="false" type="string" description="Subject of the thread."/>
+    <column name="snippet" indexable="false" type="string" description="Fragment of the thread for use in thread lists."/>
+    <column name="timestamp" indexable="true" type="string" description="Last update time of the thread (Unix-type timestamp with millisecond resolution)."/>
+    <column name="tags" indexable="false" type="array" description="Thread tags."/>
+    <column name="senders" indexable="false" type="array" description="List of participants who have sent a message in the thread. Each element of the list is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="participants" indexable="false" type="array" description="List of participants who are currently subscribed to the thread. Each element of the list is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="former_participants" indexable="false" type="array" description="List of former participants who have unsubscribed from the thread. Each element of the list is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="object_participants" indexable="false" type="array" description="List of participants who represent a Facebook page, group or event. Each element of the list is an object with properties object_address_type (int) and id (string)."/>
+    <column name="single_recipient" indexable="true" type="string" description="For threads representing a two-person conversation this is the user ID of the other thread participant."/>
+    <column name="has_attachment" indexable="false" type="bool" description="Flag indicating whether the thread contains a message which includes an attachment."/>
+  </table>
+  <table name="unified_thread_action">
+    <column name="thread_id" indexable="true" type="string" description="Unique identifier of the thread."/>
+    <column name="type" indexable="false" type="int" description="Flag to indicate whether the action is a subscribe (1) or unsubscribe (2)."/>
+    <column name="actor" indexable="false" type="object" description="The user who performed the action. This field is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="users" indexable="false" type="array" description="List of users on whom the action was performed. Each element of the list is an object with properties name (string), email (string) and user_id (string)."/>
+    <column name="timestamp" indexable="false" type="string" description="Time at which the action was performed (Unix-type timestamp with millisecond resolution)."/>
+  </table>
+  <table name="unified_thread_count">
+    <column name="folder" indexable="true" type="string" description="Folder name (&#x2018;inbox&#x2019;, &#x2018;other&#x2019;, &#x2018;spam&#x2019; or &#x2018;sent&#x2019;)."/>
+    <column name="unread_count" indexable="true" type="int" description="Number of unread threads in the folder."/>
+    <column name="unseen_count" indexable="true" type="int" description="Number of unseen threads in the folder."/>
+    <column name="last_seen_time" indexable="true" type="int" description="Last time the folder was accessed (Unix-type timestamp with millisecond resolution)."/>
+    <column name="total_threads" indexable="true" type="int" description="Total number of non-archived threads."/>
+  </table>
+  <table name="user">
+    <column name="uid" indexable="true" type="int" description="The user ID of the user being queried."/>
+    <column name="first_name" indexable="false" type="string" description="The first name of the user being queried."/>
+    <column name="middle_name" indexable="false" type="string" description="The middle name of the user being queried."/>
+    <column name="last_name" indexable="false" type="string" description="The last name of the user being queried."/>
+    <column name="name" indexable="true" type="string" description="The full name of the user being queried."/>
+    <column name="pic_small" indexable="false" type="string" description="The URL to the small-sized profile picture for the user being queried. The image can have a maximum width of 50px and a maximum height of 150px. This URL may be blank."/>
+    <column name="pic_big" indexable="false" type="string" description="The URL to the largest-sized profile picture for the user being queried. The image can have a maximum width of 200px and a maximum height of 600px. This URL may be blank."/>
+    <column name="pic_square" indexable="false" type="string" description="The URL to the square profile picture for the user being queried. The image can have a maximum width and height of 50px. This URL may be blank."/>
+    <column name="pic" indexable="false" type="string" description="The URL to the medium-sized profile picture for the user being queried. The image can have a maximum width of 100px and a maximum height of 300px. This URL may be blank."/>
+    <column name="affiliations" indexable="false" type="array" description="The networks to which the user being queried belongs. The status field within this field will only return results in English."/>
+    <column name="profile_update_time" indexable="false" type="time" description="The time the profile of the user being queried was most recently updated. If the user's profile has not been updated in the past three days, this value will be 0."/>
+    <column name="timezone" indexable="false" type="string" description="The time zone where the user being queried is located."/>
+    <column name="religion" indexable="false" type="string" description="The religion of the user being queried."/>
+    <column name="birthday" indexable="false" type="string" description="The birthday of the user being queried. The format of this date varies based on the user's locale."/>
+    <column name="birthday_date" indexable="false" type="string" description="The birthday of the user being queried, rendered as a machine-readable string. The format of this date never changes."/>
+    <column name="sex" indexable="false" type="string" description="The gender of the user being queried. This field will only return results in English."/>
+    <column name="hometown_location" indexable="false" type="array" description="The home town (and state) of the user being queried."/>
+    <column name="meeting_sex" indexable="false" type="array" description="A list of the genders the person the user being queried wants to meet."/>
+    <column name="meeting_for" indexable="false" type="array" description="A list of the reasons the user being queried wants to meet someone."/>
+    <column name="relationship_status" indexable="false" type="string" description="The type of relationship for the user being queried. This field will only return results in English."/>
+    <column name="significant_other_id" indexable="false" type="uid" description="The user ID of the partner (for example, husband, wife, boyfriend, girlfriend) of the user being queried."/>
+    <column name="political" indexable="false" type="string" description="The political views of the user being queried."/>
+    <column name="current_location" indexable="false" type="array" description="The current location of the user being queried."/>
+    <column name="activities" indexable="false" type="string" description="The activities of the user being queried."/>
+    <column name="interests" indexable="false" type="string" description="The interests of the user being queried."/>
+    <column name="is_app_user" indexable="false" type="bool" description="Indicates whether the user being queried has logged in to the current application."/>
+    <column name="music" indexable="false" type="string" description="The favorite music of the user being queried."/>
+    <column name="tv" indexable="false" type="string" description="The favorite television shows of the user being queried."/>
+    <column name="movies" indexable="false" type="string" description="The favorite movies of the user being queried."/>
+    <column name="books" indexable="false" type="string" description="The favorite books of the user being queried."/>
+    <column name="quotes" indexable="false" type="string" description="The favorite quotes of the user being queried."/>
+    <column name="about_me" indexable="false" type="string" description="More information about the user being queried."/>
+    <column name="hs_info" indexable="false" type="array" description="Information about high school of the user being queried."/>
+    <column name="education_history" indexable="false" type="array" description="Post-high school information for the user being queried."/>
+    <column name="work_history" indexable="false" type="array" description="The work history of the user being queried."/>
+    <column name="notes_count" indexable="false" type="int" description="The number of notes created by the user being queried."/>
+    <column name="wall_count" indexable="false" type="int" description="The number of Wall posts for the user being queried."/>
+    <column name="status" indexable="false" type="string" description="The current status of the user being queried."/>
+    <column name="has_added_app" indexable="false" type="bool" description="Deprecated. This value is now equivalent to is_app_user."/>
+    <column name="online_presence" indexable="false" type="string" description="The user's Facebook Chat status. Returns a string, one of active, idle, offline, or error (when Facebook can't determine presence information on the server side). The query does not return the user's Facebook Chat status when that information is restricted for privacy reasons."/>
+    <column name="locale" indexable="false" type="string" description="The two-letter language code and the two-letter country code representing the user's locale. Country codes are taken from the ISO 3166 alpha 2 code list."/>
+    <column name="proxied_email" indexable="false" type="string" description="The proxied wrapper for a user's email address. If the user shared a proxied email address instead of his or her primary email address with you, this address also appears in the email field (see above). Facebook recommends you query the email field to get the email address shared with your application."/>
+    <column name="profile_url" indexable="false" type="string" description="The URL to a user's profile. If the user specified a username for his or her profile, profile_url contains the username."/>
+    <column name="email_hashes" indexable="false" type="array" description="An array containing a set of confirmed email hashes for the user. Emails are registered via the connect.registerUsers API call and are only confirmed when the user adds your application. The format of each email hash is the crc32 and md5 hashes of the email address combined with an underscore (_)."/>
+    <column name="pic_small_with_logo" indexable="false" type="string" description="The URL to the small-sized profile picture for the user being queried. The image can have a maximum width of 50px and a maximum height of 150px, and is overlaid with the Facebook favicon. This URL may be blank."/>
+    <column name="pic_big_with_logo" indexable="false" type="string" description="The URL to the largest-sized profile picture for the user being queried. The image can have a maximum width of 200px and a maximum height of 600px, and is overlaid with the Facebook favicon. This URL may be blank."/>
+    <column name="pic_square_with_logo" indexable="false" type="string" description="The URL to the square profile picture for the user being queried. The image can have a maximum width and height of 50px, and is overlaid with the Facebook favicon. This URL may be blank."/>
+    <column name="pic_with_logo" indexable="false" type="string" description="The URL to the medium-sized profile picture for the user being queried. The image can have a maximum width of 100px and a maximum height of 300px, and is overlaid with the Facebook favicon. This URL may be blank."/>
+    <column name="allowed_restrictions" indexable="false" type="string" description="A comma-delimited list of Demographic Restrictions types a user is allowed to access. Currently, alcohol is the only type that can get returned."/>
+    <column name="verified" indexable="false" type="bool" description="Indicates whether or not Facebook has verified the user."/>
+    <column name="profile_blurb" indexable="false" type="string" description="This string contains the contents of the text box under a user's profile picture."/>
+    <column name="family" indexable="false" type="array" description="Note: For family information, you should query the family FQL table instead. This array contains a series of entries for the immediate relatives of the user being queried. Each entry is also an array containing the following fields: relationship -- A string describing the type of relationship. Can be one of parent, mother, father, sibling, sister, brother, child, son, daughter. uid (optional) -- The user ID of the relative, which gets displayed if the account is linked to (confirmed by) another account. If the relative did not confirm the relationship, the name appears instead. name (optional) -- The name of the relative, which could be text the user entered. If the relative confirmed the relationship, the uid appears instead. birthday -- If the relative is a child, this is the birthday the user entered. Note: At this time, you cannot query for a specific relationship (like SELECT family FROM user WHERE family.relationship = 'daughter' AND uid = '$x'); you'll have to query on the family field and filter the results yourself."/>
+    <column name="username" indexable="true" type="string" description="The username of the user being queried."/>
+    <column name="website" indexable="false" type="string" description="The website of the user being queried."/>
+    <column name="is_blocked" indexable="false" type="bool" description="Returns true if the user is blocked to the viewer/logged in user."/>
+    <column name="contact_email" indexable="false" type="string" description="A string containing the user's primary Facebook email address. If the user shared his or her primary email address with you, this address also appears in the email field (see below). Facebook recommends you query the email field to get the email address shared with your application."/>
+    <column name="email" indexable="false" type="string" description="A string containing the user's primary Facebook email address or the user's proxied email address, whichever address the user granted your application. Facebook recommends you query this field to get the email address shared with your application."/>
+    <column name="third_party_id" indexable="true" type="string" description="A string containing an anonymous, but unique identifier for the user. You can use this identifier with third-parties."/>
+  </table>
+  <table name="video">
+    <column name="vid" indexable="true" type="string" description="The ID of the video being queried. The vid cannot be longer than 50 characters. Note: Because the vid is a string, you should always wrap the vid in quotes when referenced in a query. The vid is unique only for a given user. You can use the vid as an object ID in the Graph API."/>
+    <column name="owner" indexable="true" type="int" description="The user ID of the owner of the video being queried."/>
+    <column name="title" indexable="false" type="string" description="The name of the video being queried."/>
+    <column name="description" indexable="false" type="string" description="The description of the video being queried."/>
+    <column name="thumbnail_link" indexable="false" type="string" description="The URL to the thumbnail image for the video being queried. This URL may be blank."/>
+    <column name="embed_html" indexable="false" type="string" description="The HTML code to embed the video."/>
+    <column name="updated_time" indexable="false" type="time" description="The date when the video being queried was last modified."/>
+    <column name="created_time" indexable="false" type="time" description="The date when the video being queried was added."/>
+    <column name="src" indexable="false" type="string" description="The source file for the standard quality version of the video."/>
+    <column name="src_hq" indexable="false" type="string" description="The source file for the high quality version of the video."/>
+  </table>
+  <table name="video_tag">
+    <column name="vid" indexable="true" type="string" description="The ID of the video being queried. The vid cannot be longer than 50 characters. Note: Because the vid is a string, you should always wrap the vid in quotes when referenced in a query."/>
+    <column name="subject" indexable="true" type="int" description="For tagged users, use the user ID of the subject for the tag being queried. For videos associated with events or groups, use the eid or gid for subject."/>
+    <column name="updated_time" indexable="false" type="time" description="The date when the video being queried was last modified."/>
+    <column name="created_time" indexable="false" type="time" description="The date when the video being queried was added."/>
+  </table>
+</schema>

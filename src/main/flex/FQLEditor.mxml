@@ -7,6 +7,9 @@
 	<fx:Script>
 		<![CDATA[
 		import fqleditor.core.Settings;
+		import fqleditor.schema.Column;
+		import fqleditor.schema.Schema;
+		import fqleditor.schema.Table;
 		
 		import mx.controls.Alert;
 		import mx.managers.CursorManager;
@@ -14,7 +17,7 @@
 		import flash.events.IOErrorEvent;
 		import flash.events.SecurityErrorEvent;
 		import flash.net.URLRequest;
-		import flash.net.URLRequest;
+		import flash.net.navigateToURL;
 		
 		//----------------------------------------------------------------------
 		//
@@ -27,6 +30,13 @@
 		 *	The saved settings for the application.
 		 */
 		private var settings:Settings = new Settings();
+
+		[Bindable]
+		/**
+		 *	The schema of the Facebook API.
+		 */
+		private var schema:Schema = new Schema();
+		
 
 
 		//----------------------------------------------------------------------
@@ -78,6 +88,7 @@
 		private function onCreationComplete(event:Event):void
 		{
 			settings.load();
+			tableList.dataProvider = schema.tables;
 			queryTextField.setFocus();
 		}
 
@@ -100,6 +111,20 @@
 			run();
 		}
 
+		private function tableList_onDoubleClick(event:MouseEvent):void
+		{
+			var table:Table = event.currentTarget.selectedItem as Table;
+			var url:String = "https://developers.facebook.com/docs/reference/fql/" + table.name;
+			navigateToURL(new URLRequest(url));
+		}
+
+		private function columnList_onDoubleClick(event:MouseEvent):void
+		{
+			var column:Column = event.currentTarget.selectedItem as Column;
+			var title:String = column.name + " (" + column.type + ")";
+			Alert.show(column.description, title)
+		}
+
 		]]>
 	</fx:Script>
 	
@@ -108,76 +133,6 @@
 			focusThickness: 0;
 		}
 	</fx:Style>
-	
-	<fx:Declarations>
-		<fx:Array id="tables">
-			<fx:Object name="album"/>
-			<fx:Object name="application"/>
-			<fx:Object name="checkin"/>
-			<fx:Object name="comment"/>
-			<fx:Object name="comments_info"/>
-			<fx:Object name="connection"/>
-			<fx:Object name="cookies"/>
-			<fx:Object name="developer"/>
-			<fx:Object name="domain"/>
-			<fx:Object name="domain_admin"/>
-			<fx:Object name="event"/>
-			<fx:Object name="event_member"/>
-			<fx:Object name="family"/>
-			<fx:Object name="friend"/>
-			<fx:Object name="friend_request"/>
-			<fx:Object name="friendlist"/>
-			<fx:Object name="friendlist_member"/>
-			<fx:Object name="group"/>
-			<fx:Object name="group_member"/>
-			<fx:Object name="insights"/>
-			<fx:Object name="like"/>
-			<fx:Object name="link"/>
-			<fx:Object name="link_stat"/>
-			<fx:Object name="mailbox_folder"/>
-			<fx:Object name="message"/>
-			<fx:Object name="note"/>
-			<fx:Object name="notification"/>
-			<fx:Object name="object_url"/>
-			<fx:Object name="page"/>
-			<fx:Object name="page_admin"/>
-			<fx:Object name="page_fan"/>
-			<fx:Object name="permissions"/>
-			<fx:Object name="permissions_info"/>
-			<fx:Object name="photo"/>
-			<fx:Object name="photo_tag"/>
-			<fx:Object name="place"/>
-			<fx:Object name="privacy"/>
-			<fx:Object name="profile"/>
-			<fx:Object name="standard_friend_info"/>
-			<fx:Object name="standard_user_info"/>
-			<fx:Object name="status"/>
-			<fx:Object name="stream"/>
-			<fx:Object name="stream_filter"/>
-			<fx:Object name="stream_tag"/>
-			<fx:Object name="thread"/>
-			<fx:Object name="translation"/>
-			<fx:Object name="unified_message"/>
-			<fx:Object name="unified_thread"/>
-			<fx:Object name="unified_thread_action"/>
-			<fx:Object name="unified_thread_count"/>
-			<fx:Object name="user"/>
-			<fx:Object name="video"/>
-			<fx:Object name="video_tag"/>
-		</fx:Array>
-
-		<fx:Array id="columns">
-			<fx:Object name="aid*" dataTip="{'aid (string)\n\nThe ID of the album being queried. The aid cannot be longer than 50 characters.\nNote: Because the aid is a string, you should always wrap the aid in quotes when referenced in a query. The aid is unique only for a given user.'}"/>
-			<fx:Object name="owner*"/>
-			<fx:Object name="cover_pid*"/>
-			<fx:Object name="name"/>
-			<fx:Object name="created"/>
-			<fx:Object name="modified"/>
-			<fx:Object name="description"/>
-			<fx:Object name="location"/>
-			<fx:Object name="size"/>
-		</fx:Array>
-	</fx:Declarations>
 	
 	<s:layout>
 		<s:VerticalLayout
@@ -194,7 +149,9 @@
 				</mx:Box>
 				<mx:List id="tableList"
 					width="100%" height="100%"
-					labelField="name" dataProvider="{tables}"
+					labelField="name"
+					doubleClickEnabled="true"
+					doubleClick="tableList_onDoubleClick(event)"
 				/>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%" verticalGap="0">
@@ -204,9 +161,9 @@
 				<mx:List id="columnList"
 					width="100%" height="100%"
 					labelField="name"
-					dataProvider="{columns}"
+					dataProvider="{tableList.selectedItem.columns}"
 					doubleClickEnabled="true"
-					doubleClick="Alert.show(event.currentTarget.selectedItem.dataTip)"
+					doubleClick="columnList_onDoubleClick(event)"
 				/>
 			</mx:VBox>
 		</mx:VDividedBox>
