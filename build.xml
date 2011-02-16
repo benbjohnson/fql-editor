@@ -6,6 +6,7 @@
     <property name="compc.jar" value="${FLEX_HOME}/lib/compc.jar" />
     <property name="mxmlc.jar" value="${FLEX_HOME}/lib/mxmlc.jar" />
     <property name="asdoc.jar" value="${FLEX_HOME}/lib/asdoc.jar" />
+    <property name="adt.jar" value="${FLEX_HOME}/lib/adt.jar" />
 
     <property name="version" value="0.1.0"/>
 
@@ -21,6 +22,13 @@
 	<target name="init">
 		<mkdir dir="${target.dir}"/>
 		<copy file="${src.dir}/main/resources/FQLEditor-app.xml" todir="${target.dir}" overwrite="true"/>
+
+		<!-- Read property file and update application descriptor -->
+		<replaceregexp
+			file="${target.dir}/FQLEditor-app.xml"
+			match="&lt;version&gt;.+?&lt;/version&gt;"
+			replace="&lt;version&gt;${version}&lt;/version&gt;"
+		/>
 
 		<!-- TestRunner dependencies -->
 		<mkdir dir="${target.dir}/test"/>
@@ -51,6 +59,25 @@
 			<arg value="+configname=air"/>
 			<arg value="-load-config+=${src.dir}/test/resources/TestRunner-config.xml"/>
 			<arg value="${src.dir}/test/flex/TestRunner.as"/>
+		</java>
+	</target>
+
+	<!-- adt -package -storetype pkcs12 -storepass password -keystore src/main/resources/fql-editor.p12 target/FQLEditor.air target/FQLEditor-app.xml -C target FQLEditor.swf -->
+	<target name="package" depends="compile">
+		<!-- Package file -->
+		<java jar="${adt.jar}" fork="true" failonerror="true"> 
+			<arg value="-package"/> 
+			<arg value="-storetype"/> 
+			<arg value="pkcs12"/> 
+			<arg value="-storepass"/> 
+			<arg value="password"/> 
+			<arg value="-keystore"/> 
+			<arg value="src/main/resources/fql-editor.p12"/> 
+			<arg value="${target.dir}/FQLEditor-${version}.air"/> 
+			<arg value="${target.dir}/FQLEditor-app.xml"/> 
+			<arg value="-C"/> 
+			<arg value="${target.dir}"/> 
+			<arg value="FQLEditor.swf"/> 
 		</java>
 	</target>
 
