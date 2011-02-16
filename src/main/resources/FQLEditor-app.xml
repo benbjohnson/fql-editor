@@ -5,7 +5,7 @@
     <filename>FQLEditor</filename>
     <name>FQLEditor</name>
     <initialWindow>
-        <title>FQLEditor</title>
+        <title>FQL Editor</title>
         <content>FQLEditor.swf</content>
         <systemChrome>standard</systemChrome>
         <visible>true</visible>

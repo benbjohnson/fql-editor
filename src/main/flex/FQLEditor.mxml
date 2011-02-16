@@ -1,15 +1,219 @@
 <s:WindowedApplication
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	creationComplete="onCreationComplete(event)"
 >
 	<fx:Script>
 		<![CDATA[
+		import fqleditor.core.Settings;
+		
+		import mx.controls.Alert;
+		import mx.managers.CursorManager;
+
+		import flash.events.IOErrorEvent;
+		import flash.events.SecurityErrorEvent;
+		import flash.net.URLRequest;
+		import flash.net.URLRequest;
+		
+		//----------------------------------------------------------------------
+		//	Properties
+		//----------------------------------------------------------------------
+		
+		[Bindable]
+		/**
+		 *	The saved settings for the application.
+		 */
+		private var settings:Settings = new Settings();
+
+
+		//----------------------------------------------------------------------
+		//	Events
+		//----------------------------------------------------------------------
 
 		private function onCreationComplete(event:Event):void
 		{
+			settings.load();
+		}
+
+		private function appIdTextField_onChange(event:Event):void
+		{
+			settings.appId = appIdTextField.text;
+			settings.save();
+		}
+
+		private function runButton_onClick(event:MouseEvent):void
+		{
+			// Create request url
+			var request:URLRequest = new URLRequest();
+			request.method = URLRequestMethod.GET;
+			request.url = "https://api.facebook.com/method/fql.query";
+			request.data = "app_id=" + escape(appIdTextField.text) + "&"
+						 + "query=" + escape(queryTextField.text);
+
+			// Load query results
+			var loader:URLLoader = new URLLoader();
+			loader.addEventListener(Event.COMPLETE, function(event:Event):void{
+				CursorManager.removeAllCursors();
+				var xml:XML = new XML(event.target.data as String);
+				resultsTextField.text = xml.toXMLString();
+			});
+			loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, function(event:HTTPStatusEvent):void{
+				CursorManager.removeAllCursors();
+				// TODO: Show HTTP header info
+			});
+			loader.addEventListener(IOErrorEvent.IO_ERROR, function(event:IOErrorEvent):void{
+				CursorManager.removeAllCursors();
+				Alert.show(event.toString(), "IO Error");
+			});
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(event:SecurityErrorEvent):void{
+				CursorManager.removeAllCursors();
+				Alert.show(event.toString(), "Security Error");
+			});
+			loader.load(request);
+
+			CursorManager.setBusyCursor();
 		}
 
 		]]>
 	</fx:Script>
 	
+	<fx:Declarations>
+		<fx:Array id="tables">
+			<fx:Object name="album"/>
+			<fx:Object name="application"/>
+			<fx:Object name="checkin"/>
+			<fx:Object name="comment"/>
+			<fx:Object name="comments_info"/>
+			<fx:Object name="connection"/>
+			<fx:Object name="cookies"/>
+			<fx:Object name="developer"/>
+			<fx:Object name="domain"/>
+			<fx:Object name="domain_admin"/>
+			<fx:Object name="event"/>
+			<fx:Object name="event_member"/>
+			<fx:Object name="family"/>
+			<fx:Object name="friend"/>
+			<fx:Object name="friend_request"/>
+			<fx:Object name="friendlist"/>
+			<fx:Object name="friendlist_member"/>
+			<fx:Object name="group"/>
+			<fx:Object name="group_member"/>
+			<fx:Object name="insights"/>
+			<fx:Object name="like"/>
+			<fx:Object name="link"/>
+			<fx:Object name="link_stat"/>
+			<fx:Object name="mailbox_folder"/>
+			<fx:Object name="message"/>
+			<fx:Object name="note"/>
+			<fx:Object name="notification"/>
+			<fx:Object name="object_url"/>
+			<fx:Object name="page"/>
+			<fx:Object name="page_admin"/>
+			<fx:Object name="page_fan"/>
+			<fx:Object name="permissions"/>
+			<fx:Object name="permissions_info"/>
+			<fx:Object name="photo"/>
+			<fx:Object name="photo_tag"/>
+			<fx:Object name="place"/>
+			<fx:Object name="privacy"/>
+			<fx:Object name="profile"/>
+			<fx:Object name="standard_friend_info"/>
+			<fx:Object name="standard_user_info"/>
+			<fx:Object name="status"/>
+			<fx:Object name="stream"/>
+			<fx:Object name="stream_filter"/>
+			<fx:Object name="stream_tag"/>
+			<fx:Object name="thread"/>
+			<fx:Object name="translation"/>
+			<fx:Object name="unified_message"/>
+			<fx:Object name="unified_thread"/>
+			<fx:Object name="unified_thread_action"/>
+			<fx:Object name="unified_thread_count"/>
+			<fx:Object name="user"/>
+			<fx:Object name="video"/>
+			<fx:Object name="video_tag"/>
+		</fx:Array>
+
+		<fx:Array id="columns">
+			<fx:Object name="aid*" dataTip="{'aid (string)\n\nThe ID of the album being queried. The aid cannot be longer than 50 characters.\nNote: Because the aid is a string, you should always wrap the aid in quotes when referenced in a query. The aid is unique only for a given user.'}"/>
+			<fx:Object name="owner*"/>
+			<fx:Object name="cover_pid*"/>
+			<fx:Object name="name"/>
+			<fx:Object name="created"/>
+			<fx:Object name="modified"/>
+			<fx:Object name="description"/>
+			<fx:Object name="location"/>
+			<fx:Object name="size"/>
+		</fx:Array>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout
+			paddingTop="10" paddingBottom="10"
+			paddingLeft="10" paddingRight="10"
+		/>
+	</s:layout>
+	
+	<mx:HDividedBox width="100%" height="100%" liveDragging="true">
+		<mx:VDividedBox width="20%" height="100%" liveDragging="true">
+			<mx:VBox width="100%" height="100%" verticalGap="0">
+				<mx:Box width="100%" backgroundColor="#333333">
+					<mx:Label text="Tables" fontWeight="bold" color="#FFFFFF" paddingTop="2"/>
+				</mx:Box>
+				<mx:List id="tableList"
+					width="100%" height="100%"
+					labelField="name" dataProvider="{tables}"
+				/>
+			</mx:VBox>
+			<mx:VBox width="100%" height="100%" verticalGap="0">
+				<mx:Box width="100%" backgroundColor="#333333">
+					<mx:Label text="Columns" fontWeight="bold" color="#FFFFFF" paddingTop="2"/>
+				</mx:Box>
+				<mx:List id="columnList"
+					width="100%" height="100%"
+					labelField="name"
+					dataProvider="{columns}"
+					doubleClickEnabled="true"
+					doubleClick="Alert.show(event.currentTarget.selectedItem.dataTip)"
+				/>
+			</mx:VBox>
+		</mx:VDividedBox>
+
+		<mx:VDividedBox width="100%" height="100%" liveDragging="true">
+			<mx:VBox width="100%" height="20%" verticalGap="0">
+				<mx:Box width="100%" backgroundColor="#333333">
+					<mx:Label text="Query"
+						fontWeight="bold" color="#FFFFFF" paddingTop="2"
+					/>
+				</mx:Box>
+				<mx:TextArea id="queryTextField"
+					width="100%" height="100%"
+					fontFamily="Courier New"
+				/>
+				<mx:Spacer height="2"/>
+				<mx:HBox width="100%" horizontalGap="0" verticalAlign="middle">
+					<mx:Button id="runButton" label="Run" click="runButton_onClick(event)"/>
+					<mx:Spacer width="100%"/>
+					<mx:Label text="App ID:" paddingTop="2" tabEnabled="false"/>
+					<mx:TextInput id="appIdTextField"
+						width="150" text="{settings.appId}"
+						change="appIdTextField_onChange(event)"
+					/>
+				</mx:HBox>
+			</mx:VBox>
+			<mx:VBox width="100%" height="80%" verticalGap="0">
+				<mx:Box width="100%" backgroundColor="#333333">
+					<mx:Label text="Results"
+						fontWeight="bold" color="#FFFFFF" paddingTop="2"
+					/>
+				</mx:Box>
+				<mx:TextArea id="resultsTextField"
+					width="100%" height="100%"
+					fontFamily="Courier New"
+					editable="false"
+				/>
+			</mx:VBox>
+		</mx:VDividedBox>
+	</mx:HDividedBox>
 </s:WindowedApplication>
