@@ -23,10 +23,10 @@ https://github.com/benbjohnson/fql-editor/downloads
 
 The FQL Editor provides the following features:
 
-* Syntax Highlighting
-* Result data view
-* Table and column lists
-* Inline documentation
+* Simple interface
+* Raw server response
+* Embedded table and column documentation
+* Easy linking to official Facebook documentation
 
 
 ## CONTRIBUTE
