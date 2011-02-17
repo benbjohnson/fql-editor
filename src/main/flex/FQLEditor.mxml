@@ -78,6 +78,11 @@
 			CursorManager.setBusyCursor();
 		}
 
+		private function columnList_name_labelFunction(column:Column):String
+		{
+			return column.name + (column.indexable ? "*" : "");
+		}
+		
 		
 		//----------------------------------------------------------------------
 		//
@@ -160,7 +165,7 @@
 				</mx:Box>
 				<mx:List id="columnList"
 					width="100%" height="100%"
-					labelField="name"
+					labelFunction="columnList_name_labelFunction"
 					dataProvider="{tableList.selectedItem.columns}"
 					doubleClickEnabled="true"
 					doubleClick="columnList_onDoubleClick(event)"
