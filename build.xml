@@ -8,7 +8,7 @@
     <property name="asdoc.jar" value="${FLEX_HOME}/lib/asdoc.jar" />
     <property name="adt.jar" value="${FLEX_HOME}/lib/adt.jar" />
 
-    <property name="version" value="0.1.0"/>
+    <property name="version" value="0.1.1"/>
 
 	<property name="doc.dir" value="${basedir}/doc"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
